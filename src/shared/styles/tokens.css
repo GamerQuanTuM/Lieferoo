@@ -1,0 +1,59 @@
+/* Lieferoo Design Guide lite · v1.1 · 2026-11-10 */
+/* Lieferoo Design Guide lite v1.0 — design tokens (2days project, fictional brand) */
+:root {
+  --oo-orange-50: #FFF3EC;
+  --oo-orange-100: #FFE3D3;
+  --oo-orange-300: #FFA97F;
+  --oo-orange-500: #FF6B2C;
+  --oo-orange-600: #C8410B;
+  --oo-orange-700: #A33608;
+  --oo-neutral-0: #FFFFFF;
+  --oo-neutral-50: #F9F9F9;
+  --oo-neutral-100: #F3F3F3;
+  --oo-neutral-200: #E9E9E9;
+  --oo-neutral-300: #D9D9D9;
+  --oo-neutral-400: #B3B3B3;
+  --oo-neutral-500: #8C8C8C;
+  --oo-neutral-600: #666666;
+  --oo-neutral-700: #4D4D4D;
+  --oo-neutral-800: #333333;
+  --oo-neutral-900: #1A1A1A;
+  --oo-success: #1F8A4C;
+  --oo-warning: #B87400;
+  --oo-error: #D93025;
+  --oo-info: #2563C9;
+
+  --oo-color-primary: var(--oo-orange-600);
+  --oo-color-primary-pressed: var(--oo-orange-700);
+  --oo-color-text: var(--oo-neutral-900);
+  --oo-color-text-sub: var(--oo-neutral-600);
+  --oo-color-border: var(--oo-neutral-300);
+  --oo-color-divider: var(--oo-neutral-200);
+  --oo-color-band: var(--oo-neutral-100);
+
+  --oo-font: 'Noto Sans KR', system-ui, sans-serif;
+  --oo-type-display: 700 24px/32px var(--oo-font);
+  --oo-type-title: 700 20px/28px var(--oo-font);
+  --oo-type-headline: 700 17px/24px var(--oo-font);
+  --oo-type-body-1: 400 15px/22px var(--oo-font);
+  --oo-type-body-1-strong: 700 15px/22px var(--oo-font);
+  --oo-type-body-2: 400 14px/20px var(--oo-font);
+  --oo-type-caption: 400 13px/18px var(--oo-font);
+  --oo-type-small: 400 12px/16px var(--oo-font);
+
+  --oo-space-4: 4px;
+  --oo-space-8: 8px;
+  --oo-space-12: 12px;
+  --oo-space-16: 16px;
+  --oo-space-24: 24px;
+  --oo-space-32: 32px;
+  --oo-radius-s: 4px;
+  --oo-radius-m: 12px;
+  --oo-radius-pill: 999px;
+
+  --oo-height-top-bar: 56px;
+  --oo-height-button-l: 52px;
+  --oo-height-button-m: 44px;
+  --oo-height-input: 48px;
+  --oo-height-chip: 34px;
+}
