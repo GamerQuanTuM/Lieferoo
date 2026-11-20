@@ -29,7 +29,8 @@ Door codes, buildings, floors: always extracted verbatim as "clues".
 **Rules to remember**
 - Door codes are copied, never translated or reformatted.
 - `confidence: "low"` makes the rider screen show "check the original".
-- AI: `api/translate.ts` (Vercel Function) answers `{ text_ko }` with a free Gemini or Groq key from env. Set `VITE_AI_ENDPOINT=/api/translate` at build time to use it. If it fails, is slower than 4 s, or alters a code, the pipeline falls back to the phrasebook, then the original — the order is never blocked.
+- Pilot rule: no paid AI, no API key, static site — translation is the rule-based phrasebook. The optional `VITE_AI_ENDPOINT` hook stays unused; if it is ever set and fails, is slower than 4 s, or alters a code, the pipeline falls back to the phrasebook, then the original. The order is never blocked.
+- Store requests use their own phrasebook (`STORE_PHRASES` in `rules.ts`, food and packing requests). To add a phrase, add a line there and a test.
 - To add a phrase: add a line to `PHRASES` in `rules.ts` and a test in `translation.test.ts`.
 
 **Tests:** `translation.test.ts`

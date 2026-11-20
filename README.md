@@ -23,7 +23,7 @@ npm install
 npm run dev     # opens http://localhost:5173
 ```
 
-Node 20+ (developed on Node 24). Environment variables: none needed to run. Optional AI translation (Vercel): `VITE_AI_ENDPOINT=/api/translate` plus one free key on the server, `GEMINI_API_KEY` or `GROQ_API_KEY` (see `api/translate.ts`). Without them the phrasebook is used. Other scripts: `npm test`, `npm run typecheck`, `npm run build`.
+Node 20+ (developed on Node 24). Environment variables: None. Other scripts: `npm test`, `npm run typecheck`, `npm run build`.
 
 ## Run as an Android app (build the APK)
 

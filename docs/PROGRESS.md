@@ -33,12 +33,13 @@ Deadline: Saturday. Project final deadline is T0+49h; my task due is recommended
 - [x] 2026-11-20 Android app via Capacitor 8 (`capacitor.config.ts`, `android/`, appId `com.lieferoo.app`). Native bootstrap in `src/shared/native.ts` (status bar, hardware back button). UI polish for native: SVG icons (`shared/ui/Icons.tsx`) replace text glyphs, safe-area insets, tap highlight/touch rules, fixed-CTA safe-area. Scripts: `npm run android:sync`, `android:apk`, `android:open`. Needs JDK 21 (Android Studio's `jbr`) and `android/local.properties` (`sdk.dir=...`, git-ignored).
 
 - [x] 2026-11-20 New pages from `docs/resources/new_pages`: **Confirming Address** -> `address/PinScreen` (`#/pin`, linked from search "Pin on Maps"); **Delivery / Order Tracking** -> `checkout/TrackingScreen` (`#/track/:token`); **Order (Store View)** -> new feature `store` (`#/store/:idOrToken`). Selecting Address, Checkout and Rider's View already existed. The Placed screen links to all three.
-- [x] 2026-11-20 Task "User's View: Update the English checkout page to handle translated text": store request now translated too (`store_request.translation`, store phrasebook); AI step wired through a Vercel Function `api/translate.ts` (free Gemini or Groq key, `VITE_AI_ENDPOINT=/api/translate`); AI limited to 4 s, then phrasebook, then original — order never blocked; checkout button shows "Translating for your rider…"; Order placed screen tells per note how it reaches the rider/store. 63 tests pass; typecheck + build clean; flow checked at 390×844.
+- [x] 2026-11-20 Task "User's View: Update the English checkout page to handle translated text": store request now translated too (`store_request.translation`, rule-based store phrasebook — pilot: no paid AI, no API key, static site); if a note can't be fully translated the rider/store get the original alongside and the order is never blocked; checkout button shows "Translating for your rider…"; Order placed screen tells per note how it reaches the rider/store. 63 tests pass; typecheck + build clean; flow checked at 390×844.
 
 ## Next (updated)
 - [ ] Team fills Decision columns in docs/TEAM_DISCUSSION.md; get PM/designer/marketer answers (§1.6).
 - [ ] Open question: is the designer's Figma different from as-is? Adjust styling once received.
-- [ ] Optional AI: `api/translate.ts` is in the repo — on Vercel add `GEMINI_API_KEY` (or `GROQ_API_KEY`) and `VITE_AI_ENDPOINT=/api/translate`, then redeploy.
+- [x] AI translation: not used in the pilot (PM: no paid integrations; Vercel is a plain static site). Rule-based only.
+- [ ] Store order view (designer screen): show `store_request.translation` (Korean + original) once that screen is on main.
 - [ ] GitHub public repo + Vercel deploy + fill README/HANDOFF TODOs + screenshots.
 
 ## Older next-list (partly done)
