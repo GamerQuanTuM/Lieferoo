@@ -86,7 +86,8 @@ export interface Order {
   customer: { customer_id: string; display_name: string; safe_number: string };
   delivery_address: DeliveryAddress;
   rider_request: { preset: RiderPreset | null; text: string; translation?: Translation };
-  store_request: { text: string; no_cutlery: boolean };
+  /** translation: NEW (like rider_request) — the store is Korean-only too. Absent = the store sees the original only. */
+  store_request: { text: string; no_cutlery: boolean; translation?: Translation };
   items: OrderItem[];
   subtotal_krw: number;
   delivery_fee_krw: number;

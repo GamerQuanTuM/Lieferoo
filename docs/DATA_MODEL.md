@@ -20,6 +20,7 @@ Loaded at runtime by `src/data/DataProvider.tsx` (`fetch` from `${BASE_URL}data/
 | `rider_request.preset` | Korean label from the data spec (`PRESET_LABEL_KO`) |
 | `rider_request.text` | Translated, clues extracted, original always shown |
 | `store_request.text/no_cutlery` | Stored on the order (no shop screen) |
+| `store_request.translation` | NEW: same shape as `rider_request.translation`, made at placement with the store phrasebook (food and packing requests). Absent when the store request is empty |
 | `customer.safe_number` | The rider's "call the customer" button (`tel:`) |
 | `delivery_address.location` | The rider's "navigate" link |
 | `status`, `delivered_at` | Rider status pill and the "delivered" button |
@@ -42,6 +43,9 @@ All optional, `snake_case`, only on orders created by the app:
     "engine": "rules",                  // rules | ai
     "confidence": "high"                // high | low (low → rider screen asks to check the original)
   }
+},
+"store_request": {
+  "translation": { "…": "same shape; text_ko e.g. \"덜 맵게(맵지 않게) 해주세요. 고수는 빼주세요.\"" }
 }
 ```
 Clue types: `door_code`, `building`, `floor`, `no_bell`, `call_first`, `underground`.

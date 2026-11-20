@@ -24,6 +24,29 @@ const PHRASES: Array<[RegExp, string]> = [
   [/(thank you|thanks)/i, "감사합니다."],
 ];
 
+/** Store request phrases (food and packing) — the shop is Korean-only, like the rider. */
+const STORE_PHRASES: Array<[RegExp, string]> = [
+  [/(no|not|without|less|mild|not too) (very )?spicy|no chil+i/i, "덜 맵게(맵지 않게) 해주세요."],
+  [/extra spicy|more spicy|very spicy/i, "아주 맵게 해주세요."],
+  [/no cilantro|no coriander/i, "고수는 빼주세요."],
+  [/no onions?/i, "양파는 빼주세요."],
+  [/no garlic/i, "마늘은 빼주세요."],
+  [/no (msg)/i, "MSG는 넣지 말아주세요."],
+  [/no (pork)/i, "돼지고기는 빼주세요."],
+  [/no (beef)/i, "소고기는 빼주세요."],
+  [/(i'?m |i am )?vegetarian|no meat/i, "채식이에요. 고기는 빼주세요."],
+  [/(peanut|nut)s? allerg|allergic to (peanuts?|nuts?)/i, "땅콩(견과류) 알레르기가 있어요."],
+  [/allerg/i, "알레르기가 있어요. 원문을 확인해 주세요."],
+  [/sauce on the side|separate (the )?sauce/i, "소스는 따로 담아주세요."],
+  [/less salt|not too salty/i, "덜 짜게 해주세요."],
+  [/less sugar|not too sweet/i, "덜 달게 해주세요."],
+  [/no ice/i, "얼음은 빼주세요."],
+  [/(well[- ]done|cook (it )?well)/i, "충분히 익혀주세요."],
+  [/(pack|wrap) (it )?(well|tightly|carefully)|don'?t spill/i, "흘리지 않게 잘 포장해주세요."],
+  [/extra (napkins|tissues)/i, "냅킨 더 주세요."],
+  [/(thank you|thanks)/i, "감사합니다."],
+];
+
 export interface RulesResult {
   ko: string;
   /** True when every sentence was either translated or is only a door-code statement. */
@@ -33,12 +56,16 @@ export interface RulesResult {
 const isCodeOnly = (s: string) =>
   /^(?:\w+\s){0,2}(?:code|password|pw|passcode)\b/i.test(s) && extractClues(s).some((c) => c.type === "door_code");
 
-export function translateWithRules(text: string): RulesResult {
-  const sentences = text.split(/(?<=[.!?])\s+|\n+/).map((s) => s.trim()).filter(Boolean);
+/** kind = "rider" (delivery note, default) or "store" (food and packing request). */
+export function translateWithRules(text: string, kind: "rider" | "store" = "rider"): RulesResult {
+  const phrases = kind === "store" ? STORE_PHRASES : PHRASES;
+  // store requests are short lists ("no onions, sauce on the side"), so commas split them too
+  const splitter = kind === "store" ? /(?<=[.!?,])\s+|\n+/ : /(?<=[.!?])\s+|\n+/;
+  const sentences = text.split(splitter).map((s) => s.trim()).filter(Boolean);
   const out: string[] = [];
   let covered = 0;
   for (const s of sentences) {
-    const hits = PHRASES.filter(([re]) => re.test(s)).map(([, ko]) => ko).filter(Boolean);
+    const hits = phrases.filter(([re]) => re.test(s)).map(([, ko]) => ko).filter(Boolean);
     if (hits.length) { out.push(...hits); covered++; }
     else if (isCodeOnly(s)) covered++;
   }

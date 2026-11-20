@@ -125,3 +125,5 @@ a{color:inherit}
 .item{display:flex;gap:var(--oo-space-16);align-items:center;padding:var(--oo-space-12) 0;border-bottom:1px solid var(--oo-color-divider)}
 .item__img{flex:none;width:72px;height:72px;border-radius:var(--oo-radius-s);background:var(--oo-neutral-300)}
 .item p{margin:0}
+/* Order placed — how each note reaches the rider / store */
+.status-list{margin:0 0 var(--oo-space-16);padding-left:18px;display:grid;gap:var(--oo-space-4)}

@@ -7,8 +7,9 @@ Screen 03 *Checkout · request notes* plus a short "Order placed" screen.
 |---|---|
 | Store request, no-cutlery, 4 quick rider requests, rider note (max 200) | `CheckoutScreen.tsx` |
 | "No spicy" typed into the rider note → offer to move it to the store request (A5 #9, #10) | `food.ts` → `splitFoodRequests` |
-| Place order → builds the order, translates the note, saves it, opens the confirmation | `CheckoutScreen.tsx` → `orders.buildOrder` |
-| Confirmation + shareable rider link | `PlacedScreen.tsx` |
+| Place order → builds the order, translates the rider note and the store request (at the same time), saves it, opens the confirmation. Button says "Translating for your rider…" while it waits | `CheckoutScreen.tsx` → `orders.buildOrder` |
+| Translation fails or is slow → the order still goes through with the original text | `translation` pipeline (never throws, 4 s AI limit) |
+| Confirmation + shareable rider link + how each note is delivered (translated / partly / original / already Korean) | `PlacedScreen.tsx` (`translation.deliveryStatus`) |
 | Guard: no address chosen yet → asks to search first | `CheckoutScreen.tsx` |
 
 **Public API** (`index.ts`): `CheckoutScreen`, `PlacedScreen`, `splitFoodRequests`.

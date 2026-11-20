@@ -33,11 +33,12 @@ Deadline: Saturday. Project final deadline is T0+49h; my task due is recommended
 - [x] 2026-11-20 Android app via Capacitor 8 (`capacitor.config.ts`, `android/`, appId `com.lieferoo.app`). Native bootstrap in `src/shared/native.ts` (status bar, hardware back button). UI polish for native: SVG icons (`shared/ui/Icons.tsx`) replace text glyphs, safe-area insets, tap highlight/touch rules, fixed-CTA safe-area. Scripts: `npm run android:sync`, `android:apk`, `android:open`. Needs JDK 21 (Android Studio's `jbr`) and `android/local.properties` (`sdk.dir=...`, git-ignored).
 
 - [x] 2026-11-20 New pages from `docs/resources/new_pages`: **Confirming Address** -> `address/PinScreen` (`#/pin`, linked from search "Pin on Maps"); **Delivery / Order Tracking** -> `checkout/TrackingScreen` (`#/track/:token`); **Order (Store View)** -> new feature `store` (`#/store/:idOrToken`). Selecting Address, Checkout and Rider's View already existed. The Placed screen links to all three.
+- [x] 2026-11-20 Task "User's View: Update the English checkout page to handle translated text": store request now translated too (`store_request.translation`, store phrasebook); AI step wired through a Vercel Function `api/translate.ts` (free Gemini or Groq key, `VITE_AI_ENDPOINT=/api/translate`); AI limited to 4 s, then phrasebook, then original — order never blocked; checkout button shows "Translating for your rider…"; Order placed screen tells per note how it reaches the rider/store. 63 tests pass; typecheck + build clean; flow checked at 390×844.
 
 ## Next (updated)
 - [ ] Team fills Decision columns in docs/TEAM_DISCUSSION.md; get PM/designer/marketer answers (§1.6).
 - [ ] Open question: is the designer's Figma different from as-is? Adjust styling once received.
-- [ ] Optional AI: deploy a serverless /api/translate (key in env) and set VITE_AI_ENDPOINT; client already verifies door codes.
+- [ ] Optional AI: `api/translate.ts` is in the repo — on Vercel add `GEMINI_API_KEY` (or `GROQ_API_KEY`) and `VITE_AI_ENDPOINT=/api/translate`, then redeploy.
 - [ ] GitHub public repo + Vercel deploy + fill README/HANDOFF TODOs + screenshots.
 
 ## Older next-list (partly done)
