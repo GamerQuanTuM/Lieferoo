@@ -76,6 +76,7 @@ export function CheckoutScreen() {
         <h2 className="headline">Request to the store</h2>
         <label className="sr-only" htmlFor="store">Request to the store</label>
         <input id="store" className="input" placeholder="e.g. Not too spicy please" maxLength={NOTE_MAX_LENGTH} value={storeText} onChange={(e) => setStoreText(e.target.value)} />
+        <p className="sub">The store reads this in Korean, with your original text alongside.</p>
         <label className="check">
           <input type="checkbox" checked={noCutlery} onChange={(e) => setNoCutlery(e.target.checked)} /> No disposable cutlery
         </label>
@@ -102,7 +103,7 @@ export function CheckoutScreen() {
             <button type="button" className="btn btn--outline" onClick={moveFood}>Move to “Request to the store”</button>
           </div>
         )}
-        <p className="sub">The rider reads this in Korean. Door codes are kept exactly as you type them.</p>
+        <p className="sub">The rider reads this in Korean. Door codes are kept exactly as you type them. If we can’t translate it, the rider sees exactly what you wrote.</p>
       </section>
       <div className="band" />
       <section className="pad sums">
@@ -113,7 +114,7 @@ export function CheckoutScreen() {
       </section>
       <div className="cta">
         <button type="button" className="btn btn--primary" onClick={place} disabled={busy}>
-          {busy ? "Placing order…" : `Place order · ${won(total)}`}
+          {busy ? (note.trim() || storeText.trim() ? "Translating for your rider…" : "Placing order…") : `Place order · ${won(total)}`}
         </button>
       </div>
     </main>

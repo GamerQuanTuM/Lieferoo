@@ -23,7 +23,7 @@ npm install
 npm run dev     # opens http://localhost:5173
 ```
 
-Node 20+ (developed on Node 24). Environment variables: None. Other scripts: `npm test`, `npm run typecheck`, `npm run build`.
+Node 20+ (developed on Node 24). Environment variables: none needed to run. Optional AI translation (Vercel): `VITE_AI_ENDPOINT=/api/translate` plus one free key on the server, `GEMINI_API_KEY` or `GROQ_API_KEY` (see `api/translate.ts`). Without them the phrasebook is used. Other scripts: `npm test`, `npm run typecheck`, `npm run build`.
 
 ## Project structure
 
@@ -64,7 +64,7 @@ Docs: [index](docs/README.md) · [product overview (PM)](docs/PRODUCT_OVERVIEW.m
 ## Data
 
 - Sample data used: sample_addresses.json · sample_orders.json (in `public/data/`, unchanged, loaded with fetch)
-- Data changes (additions only, snake_case, nothing renamed): `rider_request.translation {source_lang,text_ko,clues[],engine,confidence}` and `delivery_address.detail_ko` on new orders. New orders use a fixed demo store, items, customer and rider.
+- Data changes (additions only, snake_case, nothing renamed): `rider_request.translation {source_lang,text_ko,clues[],engine,confidence}`, `store_request.translation` (same shape) and `delivery_address.detail_ko` on new orders. New orders use a fixed demo store, items, customer and rider.
 
 ## Tech stack
 

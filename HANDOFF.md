@@ -33,6 +33,8 @@
 | Unknown address / bad link | Details / rider | Open `#/address/ADR-999` or `#/rider/xyz` |
 | Empty note / empty unit | Checkout / rider | Place an order with both empty → rider shows 요청사항 없음 and a call-the-customer hint |
 | Translation not possible | Rider | Order HN-20261012-0004 (Japanese): original + notice, door code still highlighted |
+| Translation slow or down | Checkout → Order placed | Without an AI key (or if it takes over 4 s) the order still places; "Order placed" says per note whether it went in Korean, partly, or as the original |
+| Store request in English | Checkout → Order placed | Type "Not too spicy please, no cilantro" in Request to the store → "Request to the store: translated to Korean" (stored as `store_request.translation`) |
 
 ## Known bugs
 

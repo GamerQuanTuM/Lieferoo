@@ -30,10 +30,12 @@ Deadline: Saturday. Project final deadline is T0+49h; my task due is recommended
 
 - [x] 2026-11-19 Restructured into feature modules (address, checkout, orders, translation, rider) + app/shared/domain/data; central routes and storage helpers; removed duplicate root files (checksum-verified); resources moved to docs/resources; added docs/ (README index, ARCHITECTURE, PRODUCT_OVERVIEW, DATA_MODEL, DEVELOPMENT), per-feature READMEs and CLAUDE.md; architecture rules enforced by test. 56 tests pass; full flow re-verified in Chrome 390x844.
 
+- [x] 2026-11-20 Task "User's View: Update the English checkout page to handle translated text": store request now translated too (`store_request.translation`, store phrasebook); AI step wired through a Vercel Function `api/translate.ts` (free Gemini or Groq key, `VITE_AI_ENDPOINT=/api/translate`); AI limited to 4 s, then phrasebook, then original — order never blocked; checkout button shows "Translating for your rider…"; Order placed screen tells per note how it reaches the rider/store. 63 tests pass; typecheck + build clean; flow checked at 390×844.
+
 ## Next (updated)
 - [ ] Team fills Decision columns in docs/TEAM_DISCUSSION.md; get PM/designer/marketer answers (§1.6).
 - [ ] Open question: is the designer's Figma different from as-is? Adjust styling once received.
-- [ ] Optional AI: deploy a serverless /api/translate (key in env) and set VITE_AI_ENDPOINT; client already verifies door codes.
+- [ ] Optional AI: `api/translate.ts` is in the repo — on Vercel add `GEMINI_API_KEY` (or `GROQ_API_KEY`) and `VITE_AI_ENDPOINT=/api/translate`, then redeploy.
 - [ ] GitHub public repo + Vercel deploy + fill README/HANDOFF TODOs + screenshots.
 
 ## Older next-list (partly done)
