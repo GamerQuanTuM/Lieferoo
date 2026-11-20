@@ -34,12 +34,13 @@ Deadline: Saturday. Project final deadline is T0+49h; my task due is recommended
 
 - [x] 2026-11-20 New pages from `docs/resources/new_pages`: **Confirming Address** -> `address/PinScreen` (`#/pin`, linked from search "Pin on Maps"); **Delivery / Order Tracking** -> `checkout/TrackingScreen` (`#/track/:token`); **Order (Store View)** -> new feature `store` (`#/store/:idOrToken`). Selecting Address, Checkout and Rider's View already existed. The Placed screen links to all three.
 - [x] 2026-11-20 Task "User's View: Update the English checkout page to handle translated text": store request now translated too (`store_request.translation`, rule-based store phrasebook — pilot: no paid AI, no API key, static site); if a note can't be fully translated the rider/store get the original alongside and the order is never blocked; checkout button shows "Translating for your rider…"; Order placed screen tells per note how it reaches the rider/store. 63 tests pass; typecheck + build clean; flow checked at 390×844.
+- [x] 2026-11-21 Rebased on main. Store-request chips on checkout (multi-select, preset list with fixed Korean labels like the rider presets; only "Not spicy" → "맵지 않음" until the designer sends the full list). Saved as new field `store_request.presets` (nothing renamed). Store view shows chips in Korean.
 
 ## Next (updated)
 - [ ] Team fills Decision columns in docs/TEAM_DISCUSSION.md; get PM/designer/marketer answers (§1.6).
 - [ ] Open question: is the designer's Figma different from as-is? Adjust styling once received.
 - [x] AI translation: not used in the pilot (PM: no paid integrations; Vercel is a plain static site). Rule-based only.
-- [ ] Store order view (designer screen): show `store_request.translation` (Korean + original) once that screen is on main.
+- [x] 2026-11-21 Store order view: shows `store_request.translation` (Korean + original, notice when partial/untranslated).
 - [ ] GitHub public repo + Vercel deploy + fill README/HANDOFF TODOs + screenshots.
 
 ## Older next-list (partly done)

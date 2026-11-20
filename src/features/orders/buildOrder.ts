@@ -1,4 +1,4 @@
-import type { Address, AddressType, Order, RiderPreset } from "@/domain/types";
+import type { Address, AddressType, Order, RiderPreset, StorePreset } from "@/domain/types";
 import { toDeliveryAddress } from "@/features/address";
 import { normalizeDetail, translateRiderNote, translateStoreNote } from "@/features/translation";
 import { DEMO_FEE, DEMO_ITEMS, DEMO_STORE, DEMO_SUBTOTAL } from "./demoCart";
@@ -17,6 +17,8 @@ export interface OrderInput {
   riderText: string;
   storeText: string;
   noCutlery: boolean;
+  /** Chips picked under "Request to the store" (optional; none by default). */
+  storePresets?: StorePreset[];
 }
 
 /**
@@ -28,6 +30,7 @@ export async function buildOrder(input: OrderInput, now = new Date()): Promise<O
   const detail = input.detail.trim();
   const text = input.riderText.trim();
   const storeText = input.storeText.trim();
+  const storePresets = [...new Set(input.storePresets ?? [])];
   const iso = toKstIso(now);
   const [translation, storeTranslation] = await Promise.all([
     text ? translateRiderNote(text) : undefined,
@@ -47,6 +50,7 @@ export async function buildOrder(input: OrderInput, now = new Date()): Promise<O
     store_request: {
       text: storeText,
       no_cutlery: input.noCutlery,
+      ...(storePresets.length ? { presets: storePresets } : {}),
       ...(storeTranslation ? { translation: storeTranslation } : {}),
     },
     items: DEMO_ITEMS,

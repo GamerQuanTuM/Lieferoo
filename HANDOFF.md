@@ -34,6 +34,7 @@
 | Empty note / empty unit | Checkout / rider | Place an order with both empty → rider shows 요청사항 없음 and a call-the-customer hint |
 | Translation not possible | Rider | Order HN-20261012-0004 (Japanese): original + notice, door code still highlighted |
 | Translation not fully possible | Checkout → Order placed | Type a sentence the phrasebook doesn't know (e.g. "The blue gate next to the florist") → the order still places; "Order placed" says per note whether it went in Korean, partly, or as the original |
+| Store quick request | Checkout → Store view | Tap "Not spicy" under Request to the store, place the order, open the store view → "맵지 않음" (stored as `store_request.presets`) |
 | Store request in English | Checkout → Order placed | Type "Not too spicy please, no cilantro" in Request to the store → "Request to the store: translated to Korean" (stored as `store_request.translation`) |
 
 ## Known bugs

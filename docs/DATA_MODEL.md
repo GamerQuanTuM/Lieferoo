@@ -20,6 +20,7 @@ Loaded at runtime by `src/data/DataProvider.tsx` (`fetch` from `${BASE_URL}data/
 | `rider_request.preset` | Korean label from the data spec (`PRESET_LABEL_KO`) |
 | `rider_request.text` | Translated, clues extracted, original always shown |
 | `store_request.text/no_cutlery` | Stored on the order (no shop screen) |
+| `store_request.presets` | NEW: quick requests picked on checkout (multi-select chips), e.g. `["NOT_SPICY"]`. Fixed Korean labels live in `features/translation/presets.ts`, so the store view needs no translation. Absent when none picked |
 | `store_request.translation` | NEW: same shape as `rider_request.translation`, made at placement with the store phrasebook (food and packing requests). Absent when the store request is empty |
 | `customer.safe_number` | The rider's "call the customer" button (`tel:`) |
 | `delivery_address.location` | The rider's "navigate" link |

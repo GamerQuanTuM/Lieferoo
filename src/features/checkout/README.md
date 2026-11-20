@@ -6,6 +6,7 @@ Screen 03 *Checkout · request notes* plus a short "Order placed" screen.
 | Behaviour | Where |
 |---|---|
 | Store request, no-cutlery, 4 quick rider requests, rider note (max 200) | `CheckoutScreen.tsx` |
+| Quick requests to the store: multi-select chips ("Not spicy"), saved as `store_request.presets`; the store sees the fixed Korean label | `CheckoutScreen.tsx`, labels in `translation/presets.ts` |
 | "No spicy" typed into the rider note → offer to move it to the store request (A5 #9, #10) | `food.ts` → `splitFoodRequests` |
 | Place order → builds the order, translates the rider note and the store request (at the same time), saves it, opens the confirmation. Button says "Translating for your rider…" while it waits | `CheckoutScreen.tsx` → `orders.buildOrder` |
 | A sentence the phrasebook doesn't know → the rider / store gets it partly translated with the original, or just the original; the order still goes through | `translation` pipeline (never throws) |

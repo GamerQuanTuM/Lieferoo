@@ -33,6 +33,10 @@ describe("buildOrder translations", () => {
     expect(o.store_request.translation?.text_ko).toContain("양파는 빼주세요");
     expect(o.store_request.no_cutlery).toBe(true);
   });
+  it("saves the store quick requests as a new field, once each", async () => {
+    const o = await buildOrder({ address: addressById("ADR-001"), addressType: "road", detail: "", preset: null, riderText: "", storeText: "", noCutlery: false, storePresets: ["NOT_SPICY", "NOT_SPICY"] });
+    expect(o.store_request).toEqual({ text: "", no_cutlery: false, presets: ["NOT_SPICY"] });
+  });
   it("leaves the translation out when the store request is empty", async () => {
     const o = await buildOrder({ address: addressById("ADR-001"), addressType: "road", detail: "", preset: null, riderText: "", storeText: "  ", noCutlery: false });
     expect(o.store_request).toEqual({ text: "", no_cutlery: false });

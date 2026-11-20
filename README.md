@@ -113,7 +113,7 @@ Docs: [index](docs/README.md) · [product overview (PM)](docs/PRODUCT_OVERVIEW.m
 ## Data
 
 - Sample data used: sample_addresses.json · sample_orders.json (in `public/data/`, unchanged, loaded with fetch)
-- Data changes (additions only, snake_case, nothing renamed): `rider_request.translation {source_lang,text_ko,clues[],engine,confidence}`, `store_request.translation` (same shape) and `delivery_address.detail_ko` on new orders. New orders use a fixed demo store, items, customer and rider.
+- Data changes (additions only, snake_case, nothing renamed): `rider_request.translation {source_lang,text_ko,clues[],engine,confidence}`, `store_request.translation` (same shape), `store_request.presets` (quick requests picked on checkout, e.g. `["NOT_SPICY"]`) and `delivery_address.detail_ko` on new orders. New orders use a fixed demo store, items, customer and rider.
 
 ## Tech stack
 
