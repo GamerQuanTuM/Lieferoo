@@ -32,6 +32,9 @@ export type RiderPreset =
   | "HAND_TO_ME"
   | "CALL_ON_ARRIVAL";
 
+/** Quick requests to the store (multi-select chips on checkout). Add a key here and its labels in translation/presets.ts. */
+export type StorePreset = "NOT_SPICY";
+
 export type SourceLang = "en" | "ja" | "zh" | "vi" | "ko" | "other";
 
 export interface Clue {
@@ -86,7 +89,11 @@ export interface Order {
   customer: { customer_id: string; display_name: string; safe_number: string };
   delivery_address: DeliveryAddress;
   rider_request: { preset: RiderPreset | null; text: string; translation?: Translation };
-  store_request: { text: string; no_cutlery: boolean };
+  /**
+   * presets: NEW — chips the customer picked; the store sees the fixed Korean label (no translation needed). Absent = none.
+   * translation: NEW (like rider_request) — the store is Korean-only too. Absent = the store sees the original only.
+   */
+  store_request: { text: string; no_cutlery: boolean; presets?: StorePreset[]; translation?: Translation };
   items: OrderItem[];
   subtotal_krw: number;
   delivery_fee_krw: number;

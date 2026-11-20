@@ -4,8 +4,8 @@ import { useData } from "@/data/DataProvider";
 import { addressLineEn, getAddress, loadDraft } from "@/features/address";
 import { splitFoodRequests } from "./food";
 import { DEMO_FEE, DEMO_SUBTOTAL, buildOrder, encodeOrder, saveLocalOrder } from "@/features/orders";
-import { PRESETS, PRESET_LABEL_EN } from "@/features/translation";
-import { NOTE_MAX_LENGTH, type RiderPreset } from "@/domain/types";
+import { PRESETS, PRESET_LABEL_EN, STORE_PRESETS, STORE_PRESET_LABEL_EN } from "@/features/translation";
+import { NOTE_MAX_LENGTH, type RiderPreset, type StorePreset } from "@/domain/types";
 import { navigate, routes } from "@/shared/routes";
 import { CheckIcon } from "@/shared/ui/Icons";
 
@@ -18,6 +18,9 @@ export function CheckoutScreen() {
   const address = draft ? getAddress(addresses, draft.addressId) : undefined;
 
   const [storeText, setStoreText] = useState("");
+  const [storePresets, setStorePresets] = useState<StorePreset[]>([]);
+  const toggleStorePreset = (p: StorePreset) =>
+    setStorePresets((cur) => (cur.includes(p) ? cur.filter((x) => x !== p) : [...cur, p]));
   const [noCutlery, setNoCutlery] = useState(false);
   const [preset, setPreset] = useState<RiderPreset | null>(null);
   const [note, setNote] = useState("");
@@ -44,7 +47,7 @@ export function CheckoutScreen() {
     try {
       const order = await buildOrder({
         address, addressType: draft.addressType, detail: draft.detail,
-        preset, riderText: note, storeText, noCutlery,
+        preset, riderText: note, storeText, noCutlery, storePresets,
       });
       saveLocalOrder(order);
       navigate(routes.placed(encodeOrder(order)));
@@ -75,8 +78,19 @@ export function CheckoutScreen() {
       <div className="band" />
       <section className="pad">
         <h2 className="headline">Request to the store</h2>
+        <div className="chips" role="group" aria-label="Quick request to the store">
+          {STORE_PRESETS.map((p) => {
+            const on = storePresets.includes(p);
+            return (
+              <button key={p} type="button" className={`chip${on ? " chip--on" : ""}`} aria-pressed={on} onClick={() => toggleStorePreset(p)}>
+                {on && "✓ "}{STORE_PRESET_LABEL_EN[p]}
+              </button>
+            );
+          })}
+        </div>
         <label className="sr-only" htmlFor="store">Request to the store</label>
         <input id="store" className="input" placeholder="e.g. Not too spicy please" maxLength={NOTE_MAX_LENGTH} value={storeText} onChange={(e) => setStoreText(e.target.value)} />
+        <p className="sub">The store sees the quick requests in Korean. Anything you type is shown in Korean with your original text alongside.</p>
         <label className="check">
           <input type="checkbox" checked={noCutlery} onChange={(e) => setNoCutlery(e.target.checked)} /> No disposable cutlery
         </label>
@@ -103,7 +117,7 @@ export function CheckoutScreen() {
             <button type="button" className="btn btn--outline" onClick={moveFood}>Move to “Request to the store”</button>
           </div>
         )}
-        <p className="sub">The rider reads this in Korean. Door codes are kept exactly as you type them.</p>
+        <p className="sub">The rider reads this in Korean. Door codes are kept exactly as you type them. If we can’t translate it, the rider sees exactly what you wrote.</p>
       </section>
       <div className="band" />
       <section className="pad sums">
@@ -114,7 +128,7 @@ export function CheckoutScreen() {
       </section>
       <div className="cta">
         <button type="button" className="btn btn--primary" onClick={place} disabled={busy}>
-          {busy ? "Placing order…" : `Place order · ${won(total)}`}
+          {busy ? (note.trim() || storeText.trim() ? "Translating for your rider…" : "Placing order…") : `Place order · ${won(total)}`}
         </button>
       </div>
     </main>

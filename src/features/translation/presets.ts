@@ -1,4 +1,4 @@
-import type { RiderPreset } from "@/domain/types";
+import type { RiderPreset, StorePreset } from "@/domain/types";
 
 /** Labels exactly as in B3_data_spec.md §3. */
 export const PRESET_LABEL_EN: Record<RiderPreset, string> = {
@@ -22,3 +22,19 @@ export const PRESETS: RiderPreset[] = [
   "HAND_TO_ME",
   "CALL_ON_ARRIVAL",
 ];
+
+/**
+ * Quick requests to the store — fixed Korean labels, so the shop always reads them correctly
+ * (pre-set options are safer than free text, like a kiosk). Only "Not spicy" is confirmed so far;
+ * add the rest here when the designer sends the list.
+ */
+export const STORE_PRESET_LABEL_EN: Record<StorePreset, string> = {
+  NOT_SPICY: "Not spicy",
+};
+
+export const STORE_PRESET_LABEL_KO: Record<StorePreset, string> = {
+  NOT_SPICY: "맵지 않음",
+};
+
+/** Order shown on checkout. */
+export const STORE_PRESETS: StorePreset[] = ["NOT_SPICY"];

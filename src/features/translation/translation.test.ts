@@ -1,9 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { samples } from "@/test/fixtures";
 import { extractClues } from "./clues";
 import { normalizeDetail } from "./detail";
 import { detectLang } from "./lang";
-import { translateRiderNote, verifyCodes } from "./pipeline";
+import { AI_TIMEOUT_MS, deliveryStatus, translateRiderNote, translateStoreNote, verifyCodes } from "./pipeline";
 import { PRESET_LABEL_KO } from "./presets";
 
 describe("presets (B3 §3 wording)", () => {
@@ -92,5 +92,49 @@ describe("translation pipeline", () => {
   it("verifyCodes checks every code", () => {
     expect(verifyCodes("codes 1234# and *5678", "1234# *5678")).toBe(true);
     expect(verifyCodes("codes 1234# and *5678", "1234#")).toBe(false);
+  });
+});
+
+describe("checkout text: store request + fallback", () => {
+  it("translates common food requests for the store", async () => {
+    const t = await translateStoreNote("Not too spicy please, no cilantro", undefined);
+    expect(t.text_ko).toContain("덜 맵게");
+    expect(t.text_ko).toContain("고수는 빼주세요");
+    expect(t.confidence).toBe("high");
+  });
+  it("flags allergies and keeps unknown food requests as partial", async () => {
+    const t = await translateStoreNote("I'm allergic to peanuts. Extra pickles in a separate cup.", undefined);
+    expect(t.text_ko).toContain("알레르기");
+    expect(t.confidence).toBe("low");
+  });
+  it("asks the AI with the box kind", async () => {
+    const ai = vi.fn(async () => "덜 맵게 해주세요");
+    const t = await translateStoreNote("Make it mild", ai);
+    expect(ai).toHaveBeenCalledWith("Make it mild", "store");
+    expect(t.engine).toBe("ai");
+  });
+  it("falls back when the AI fails or is too slow, and never throws", async () => {
+    const down = await translateStoreNote("No onions", async () => { throw new Error("503"); });
+    expect(down.engine).toBe("rules");
+    expect(down.text_ko).toContain("양파는 빼주세요");
+
+    vi.useFakeTimers();
+    try {
+      const pending = translateRiderNote("Please don't ring the bell", () => new Promise<string>(() => {}));
+      await vi.advanceTimersByTimeAsync(AI_TIMEOUT_MS + 1);
+      const slow = await pending;
+      expect(slow.engine).toBe("rules");
+      expect(slow.text_ko).toContain("벨은 누르지 말아주세요");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+  it("tells the customer how each note is delivered", async () => {
+    expect(deliveryStatus("", undefined)).toBe("empty");
+    expect(deliveryStatus("Hello", undefined)).toBe("original");
+    expect(deliveryStatus("No onions", await translateStoreNote("No onions", undefined))).toBe("translated");
+    expect(deliveryStatus("The blue gate next to the florist.", await translateRiderNote("The blue gate next to the florist.", undefined))).toBe("original");
+    expect(deliveryStatus("Gate 4826#. The blue gate next to the florist.", await translateRiderNote("Code 4826#. Please don't ring. The blue gate next to the florist.", undefined))).toBe("partial");
+    expect(deliveryStatus("문 앞에", await translateRiderNote("문 앞에", undefined))).toBe("korean");
   });
 });

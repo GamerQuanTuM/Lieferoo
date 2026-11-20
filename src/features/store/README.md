@@ -6,10 +6,13 @@
 |---|---|
 | Items, quantity, price | `order.items` |
 | "No disposable cutlery" in Korean | `store_request.no_cutlery` |
-| Customer's request as typed (not translated) | `store_request.text` |
+| Quick requests (chips) with their fixed Korean label, e.g. "맵지 않음" | `store_request.presets` |
+| Typed request in Korean (translated at checkout) | `store_request.translation.text_ko` |
+| Customer's original text ("고객 원문"), always | `store_request.text` |
+| Notice when only part (or nothing) could be translated | `store_request.translation.confidence` |
 
 **Public API** (`index.ts`): `StoreOrderScreen`. **Route:** `#/store/:idOrToken`.
 
-**Depends on:** `orders`, `shared`, `data`, `domain`.
+**Depends on:** `orders`, `translation` (Korean chip labels), `shared`, `data`, `domain`.
 
 **Rule:** the customer's original text is never hidden.
