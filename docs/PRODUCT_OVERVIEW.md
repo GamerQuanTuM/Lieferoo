@@ -35,6 +35,9 @@ Also: a rider order list (the 24 sample orders + any order placed on this device
 | 02 Details | Choose 도로명/지번, type unit (optional) | Unit "1203, Bldg 105" on Hanbit Village Complex 2 shows a warning |
 | 03 Checkout | Store request, no-cutlery, 4 quick rider requests, rider note (200 chars) | Type "No spicy please. Gate code 1234#" in the rider note → hint to move it |
 | 04 Rider | Korean address, unit in Korean (+ original), quick request, **door code box**, Korean note + original, notice if only partly translated, call / navigate / delivered | Open sample order HN-20261012-0004 (Japanese) → original shown + notice; code still highlighted |
+| Pin on Maps | From search: tap the map to move the pin, nearest sample address is shown, Confirm Location | Search "zzzz" → Pin on Maps → tap → Confirm |
+| Order Tracking | Progress (placed, accepted, pickup, delivered), rider name, the customer's rider request | After ordering, tap Track my order; mark delivered on the rider screen and reopen |
+| Store order (Korean) | Items, price, customer's store request as typed, no-cutlery in Korean | After ordering, open the store order screen |
 
 ## 4. Quality bar (what "handled" means)
 | Situation | Behaviour |

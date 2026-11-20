@@ -73,3 +73,22 @@ export function toDeliveryAddress(a: Address, type: AddressType, detail: string,
     location: a.location,
   };
 }
+
+/** Demo "pin on map": the dataset address closest to a point (no real geocoding, brief section 3). */
+export function nearestAddress(addresses: Address[], lat: number, lng: number): Address | undefined {
+  let best: Address | undefined;
+  let bestD = Infinity;
+  for (const a of addresses) {
+    const d = (a.location.lat - lat) ** 2 + (a.location.lng - lng) ** 2;
+    if (d < bestD) { bestD = d; best = a; }
+  }
+  return best;
+}
+
+/** Bounding box of all dataset addresses, padded a little, used to turn a map tap into lat/lng. */
+export function addressBounds(addresses: Address[]) {
+  const lats = addresses.map((a) => a.location.lat);
+  const lngs = addresses.map((a) => a.location.lng);
+  const pad = 0.002;
+  return { minLat: Math.min(...lats) - pad, maxLat: Math.max(...lats) + pad, minLng: Math.min(...lngs) - pad, maxLng: Math.max(...lngs) + pad };
+}

@@ -3,6 +3,7 @@ import { TopBar } from "@/shared/ui/TopBar";
 import { useData } from "@/data/DataProvider";
 import { searchAddresses } from "./addresses";
 import { routes } from "@/shared/routes";
+import { ChevronRightIcon, LocateIcon, SearchIcon } from "@/shared/ui/Icons";
 
 /** As-is screen 01 · Delivery address search (customer app, English). */
 export function SearchScreen() {
@@ -17,6 +18,7 @@ export function SearchScreen() {
       <TopBar title="Delivery address" />
       <div className="pad">
         <div className="search">
+          <span className="search__icon"><SearchIcon /></span>
           <label className="sr-only" htmlFor="q">Search address</label>
           <input
             id="q" className="search__input" type="search" inputMode="search" autoComplete="off"
@@ -28,7 +30,7 @@ export function SearchScreen() {
           )}
         </div>
         <button type="button" className="row-btn" onClick={() => setNotice("Current location isn’t available in this demo. Please search by name.")}>
-          <span>◎ Use my current location</span><span aria-hidden="true">›</span>
+          <span className="row-btn__label"><LocateIcon /> Use my current location</span><ChevronRightIcon />
         </button>
         {notice && <p className="sub" role="status">{notice}</p>}
       </div>
@@ -57,6 +59,8 @@ export function SearchScreen() {
             </ul>
           </>
         )}
+        <p className="sub label-gap">Can’t find the place?</p>
+        <a className="btn btn--outline" href={routes.pin()}>Pin on Maps</a>
         <p className="sub footer-link"><a href={routes.riderList()}>Open the rider app (demo)</a></p>
       </section>
     </main>

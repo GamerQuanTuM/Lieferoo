@@ -2,3 +2,4 @@
 export { CheckoutScreen } from "./CheckoutScreen";
 export { PlacedScreen } from "./PlacedScreen";
 export { splitFoodRequests } from "./food";
+export { TrackingScreen } from "./TrackingScreen";

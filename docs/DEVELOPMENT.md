@@ -43,6 +43,9 @@ Tests sit next to the code they test (`*.test.ts`). Shared sample data comes fro
 - **Accessibility:** labels on inputs, `role="alert"/"status"` on messages, visible focus, 44px tap targets.
 - Keep a function that touches the network or storage out of components when you can; put it in the feature's module.
 
+### Android app (optional)
+`npm run android:sync` (build + copy into `android/`), then `cd android && gradlew assembleDebug` with `JAVA_HOME` set to JDK 21. The APK is `android/app/build/outputs/apk/debug/app-debug.apk`. Full steps: README, "Run as an Android app". The "open on another device" link on the order-placed screen is web-only.
+
 ## 5. Optional AI translation
 The pipeline already supports it; nothing is deployed yet.
 1. Create a server function (e.g. Vercel Function) that takes `{ text, target: "ko" }` and returns `{ text_ko }`. **Keep the API key in the host's environment settings, never in the repo or the browser.**

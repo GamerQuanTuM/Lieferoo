@@ -4,27 +4,31 @@ Audience: developers. Product behaviour is in [PRODUCT_OVERVIEW.md](PRODUCT_OVER
 
 ## 1. Shape of the codebase
 
-A small, **feature-modular** React + TypeScript app. No backend: static files plus the browser.
+A small, **feature-modular** React + TypeScript app. No backend: static files plus the browser. The same build runs as **mobile web** (the deliverable) and, optionally, inside an **Android shell** made with Capacitor (see section 7).
 
 ```
 src/
-├─ main.tsx                 entry: mounts <App/> and loads the CSS
+├─ main.tsx                 entry: mounts <App/>, loads the CSS, calls initNative()
 ├─ app/                     the shell: route table + hash-route hook      (knows all features)
 ├─ domain/types.ts          data model, B3 field names                    (knows nothing)
 ├─ data/DataProvider.tsx    loads public/data/*.json, exposes useData()
 ├─ shared/                  code with no business rules
-│  ├─ ui/                   TopBar, MapPlaceholder
+│  ├─ ui/                   TopBar, MapPlaceholder, Icons (SVG)
 │  ├─ styles/               tokens.css (design tokens), global.css
-│  ├─ routes.ts             every URL in one place
+│  ├─ routes.ts             every URL in one place (+ absoluteUrl for share links)
+│  ├─ native.ts             Android-only setup (status bar, back button); no-op in the browser
 │  └─ storage.ts            safe localStorage / sessionStorage
 ├─ features/                one folder per capability; each has index.ts + README.md
-│  ├─ address/              search + address details       (screens 01, 02)
-│  ├─ checkout/             notes, place order, confirmation (screen 03)
+│  ├─ address/              search, pin on map, address details (screens 01, 02, Confirming Address)
+│  ├─ checkout/             notes, place order, confirmation, order tracking (screen 03, Order Tracking)
 │  ├─ orders/               build, store, share and find orders
 │  ├─ translation/          note → what the rider needs (clues, rules, optional AI)
-│  └─ rider/                the Korean rider screens        (screen 04 + list)
+│  ├─ rider/                the Korean rider screens        (screen 04 + list)
+│  └─ store/                the Korean shop order screen    (Order, Store View)
 └─ test/                    fixtures + the architecture test
 public/data/                B1 addresses, B2 orders (sample data, unchanged)
+android/                    Capacitor Android project (generated; web build is copied in)
+capacitor.config.ts         app id, name, web dir
 docs/                       documentation and provided resources
 ```
 
@@ -40,7 +44,7 @@ app ──► features ──► shared ──► domain
 2. `shared` may use `domain` only. It must not import `features`, `data`, or `app`.
 3. `features` talk to each other **only through `@/features/<name>`** (the barrel `index.ts`). Never `@/features/orders/kst`.
 4. A feature never reaches outside its folder with `../` and never imports `app`.
-5. No import cycles between features. Today: `address` ← `orders` → `translation`; `checkout` → `address`, `orders`, `translation`; `rider` → `orders`, `translation`.
+5. No import cycles between features. Today: `address` ← `orders` → `translation`; `checkout` → `address`, `orders`, `translation`; `rider` → `orders`, `translation`; `store` → `orders`.
 
 The test fails the build when a rule is broken, so the structure cannot rot silently.
 
@@ -85,6 +89,8 @@ Key decisions:
 | Turn on AI translation | set `VITE_AI_ENDPOINT` (see [DEVELOPMENT.md](DEVELOPMENT.md)); logic is in `translation/pipeline.ts` |
 | Change the address search rule | `features/address/addresses.ts` + `addresses.test.ts` |
 | Add a screen | create it in its feature, export it from that `index.ts`, add a builder to `shared/routes.ts` and a branch in `app/App.tsx` |
+| Change native behaviour (status bar, back button) | `shared/native.ts` (only runs inside the Android app) |
+| Build the Android APK | see section 7 and the README |
 | Add a backend | replace `orders/shareToken.ts` and `orders/localOrders.ts` with API calls using the same function names |
 | Change colours or spacing | `shared/styles/tokens.css` (values come from the design guide) |
 
@@ -99,4 +105,22 @@ Key decisions:
 
 - Translation covers common English phrases only; other languages show the original and a notice until AI is switched on.
 - No shared state between devices (no backend), so the customer never sees "delivered".
-- The map is an illustration; address search runs on the 30 sample addresses.
+- The map is an illustration; address search runs on the 30 sample addresses. "Pin on Maps" picks the nearest sample address.
+- Order tracking progress follows the order status; the 12 min estimate and the Message button are demo placeholders.
+- Android shell: the "open on another device" share link is web-only (hidden in the app).
+
+## 7. Android shell (Capacitor)
+
+The deliverable is **mobile web**. The Android app is an optional wrapper around the same build: no separate code, no native screens.
+
+```
+npm run build ─► dist/ ─► npx cap sync android ─► android/app/src/main/assets/public ─► gradlew assembleDebug ─► app-debug.apk
+```
+
+- **What is native:** only `android/` (generated by Capacitor) and `shared/native.ts`. `initNative()` returns at once in a browser (`Capacitor.isNativePlatform()`), so the web build behaves exactly as before.
+- **`initNative()`** sets the status bar (white, not overlaying the page) and maps the hardware back button to history back (exit on the first screen).
+- **Origin is `https://localhost`.** Hash routing, `fetch(BASE_URL + "data/...")` and `localStorage` all work unchanged. The one thing that does not carry over is a share link built from the origin; `absoluteUrl()` therefore returns `null` inside the app and the "open on another device" link is shown on the website only.
+- **Safe areas:** screens and the fixed bottom button use `env(safe-area-inset-*)` (`--safe-top`, `--safe-bottom` in `global.css`). Do not put `overflow-x:hidden` on `html`/`body`: it stops touch scrolling in the Android WebView. `.screen` already clips sideways overflow.
+- **Web changes need a sync.** After editing `src/`, run `npm run android:sync` before building the APK, or the app keeps the old bundle.
+- **Needs:** JDK 21, the Android SDK, and `android/local.properties` (`sdk.dir=...`, git-ignored). Steps are in the README ("Run as an Android app").
+- External links (Kakao navigation) open in the phone's browser; `tel:` opens the dialer. Fonts load from Google Fonts when online and fall back to the system Korean font offline.

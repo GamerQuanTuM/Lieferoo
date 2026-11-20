@@ -39,7 +39,7 @@ export function DetailsScreen({ addressId }: { addressId: string }) {
   return (
     <main className="screen">
       <TopBar title="Address details" backHref={routes.search()} />
-      <MapPlaceholder caption="Map preview (demo)" />
+      <MapPlaceholder tall caption="Move the map to adjust the pin" />
       <section className="pad">
         <h2 className="title">{address.building_name_en ?? address.road_address_en}</h2>
         <div className="seg" role="group" aria-label="Address type">

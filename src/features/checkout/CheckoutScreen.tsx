@@ -7,6 +7,7 @@ import { DEMO_FEE, DEMO_SUBTOTAL, buildOrder, encodeOrder, saveLocalOrder } from
 import { PRESETS, PRESET_LABEL_EN } from "@/features/translation";
 import { NOTE_MAX_LENGTH, type RiderPreset } from "@/domain/types";
 import { navigate, routes } from "@/shared/routes";
+import { CheckIcon } from "@/shared/ui/Icons";
 
 const won = (n: number) => `₩${n.toLocaleString("en-US")}`;
 
@@ -86,7 +87,7 @@ export function CheckoutScreen() {
         <div className="chips" role="group" aria-label="Quick request">
           {PRESETS.map((p) => (
             <button key={p} type="button" className={`chip${preset === p ? " chip--on" : ""}`} aria-pressed={preset === p} onClick={() => setPreset(preset === p ? null : p)}>
-              {preset === p && "✓ "}{PRESET_LABEL_EN[p]}
+              {preset === p && <CheckIcon />}{PRESET_LABEL_EN[p]}
             </button>
           ))}
         </div>

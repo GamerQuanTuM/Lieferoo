@@ -25,6 +25,54 @@ npm run dev     # opens http://localhost:5173
 
 Node 20+ (developed on Node 24). Environment variables: None. Other scripts: `npm test`, `npm run typecheck`, `npm run build`.
 
+## Run as an Android app (build the APK)
+
+The same web app is packaged for Android with [Capacitor](https://capacitorjs.com). The `android/` folder is the native project; the web build is copied into it.
+
+**Requirements**
+- Node 20+ and `npm install` done (see above)
+- **JDK 21** (Android Studio's bundled JDK works: `C:\Program Files\Android\Android Studio\jbr`)
+- **Android SDK** (install Android Studio, or the command-line tools with platform 35/36)
+- Create `android/local.properties` with your SDK path (this file is git-ignored):
+  ```
+  sdk.dir=C:/Users/<you>/AppData/Local/Android/Sdk
+  ```
+  Linux/macOS example: `sdk.dir=/home/<you>/Android/Sdk`
+
+**Build the debug APK**
+
+Windows (PowerShell):
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
+npm run android:sync          # builds the web app and copies it into android/
+cd android
+.\gradlew.bat assembleDebug
+```
+
+macOS / Linux:
+```bash
+export JAVA_HOME=/path/to/jdk-21
+npm run android:sync
+cd android && ./gradlew assembleDebug
+```
+
+The APK is created at `android/app/build/outputs/apk/debug/app-debug.apk`. The first build downloads Gradle and dependencies and can take 10+ minutes; later builds take under a minute.
+
+**Install it**
+- Phone: turn on *USB debugging*, plug it in, then `adb install -r android/app/build/outputs/apk/debug/app-debug.apk`. Or copy the APK to the phone and open it (allow installs from unknown sources).
+- Emulator: create a device in Android Studio (Device Manager), start it, then run the same `adb install` command.
+- Or open the project in Android Studio with `npm run android:open` and press Run.
+
+**Website only:** the "open the rider screen on another device" link on the order-placed screen is hidden in the Android app.
+
+**After changing web code** (`src/`), run `npm run android:sync` again before `assembleDebug`, otherwise the APK keeps the old web bundle.
+
+**Troubleshooting**
+- `invalid source release: 21`: `JAVA_HOME` is not JDK 21 in this terminal.
+- `SDK location not found`: missing or wrong `android/local.properties`.
+- Gradle download timeout: retry, or check your network/proxy.
+- This is a **debug** APK for testing. A Play Store release needs a signed build (Android Studio: *Build > Generate Signed Bundle / APK*).
+
 ## Project structure
 
 Feature-modular React + TypeScript. Each feature has its own `README.md`; module rules are enforced by a test.
@@ -35,8 +83,9 @@ src/
   domain/       data types (field names from the data spec)
   data/         loads the sample data
   shared/       UI parts, design tokens, routes, safe storage
-  features/     address · checkout · orders · translation · rider
+  features/     address · checkout · orders · translation · rider · store
 public/data/    sample addresses and orders
+android/        Capacitor Android project (see "Run as an Android app")
 docs/           documentation and provided resources (start at docs/README.md)
 ```
 
@@ -72,6 +121,7 @@ Docs: [index](docs/README.md) · [product overview (PM)](docs/PRODUCT_OVERVIEW.m
 |---|---|---|
 | Language · framework | TypeScript, React 18 + Vite 5 | Fast setup, strict typing, easy Vercel deploy |
 | Styling | Plain CSS with the provided design tokens | Tokens are already CSS variables; no extra dependency |
+| Mobile app | Capacitor 8 (Android) | Same code runs as an Android app; `android/` is the native project |
 | Hosting | Vercel (planned) | Free https link, deploys from GitHub |
 
 ## Open-source libraries
@@ -82,6 +132,7 @@ Docs: [index](docs/README.md) · [product overview (PM)](docs/PRODUCT_OVERVIEW.m
 | vite | 5.4.x | Dev server and build | Zero-config TS + React | CRA (deprecated), Next.js (SSR not needed) |
 | vitest | 2.1.x | Unit tests | Shares Vite config | Jest: more setup |
 | typescript | 5.6.3 | Type safety | Catches data-shape bugs | — |
+| @capacitor/core, android, app, status-bar, splash-screen | 8.x | Packages the web app as an Android app (back button, status bar) | Reuses the web code with no rewrite | React Native / Flutter: full rewrite |
 
 ## My role and contribution
 

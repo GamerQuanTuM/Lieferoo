@@ -26,9 +26,15 @@ export function PlacedScreen({ token }: { token: string }) {
         <p className="title">Thank you!</p>
         <p className="sub">Order {order.order_id}</p>
         <p className="body">Your rider will see your address and note in Korean.</p>
-        <a className="btn btn--primary" href={routes.rider(token)}>See what the rider sees (한국어)</a>
-        <p className="sub">Open the rider screen on another device with this link:</p>
-        <input className="input" readOnly value={riderUrl} onFocus={(e) => e.currentTarget.select()} aria-label="Rider screen link" />
+        <a className="btn btn--primary" href={routes.track(token)}>Track my order</a>
+        <a className="btn btn--outline" href={routes.rider(token)}>See what the rider sees (한국어)</a>
+        <a className="btn btn--outline" href={routes.store(token)}>See the store’s order screen (한국어)</a>
+        {riderUrl && (
+          <>
+            <p className="sub">Open the rider screen on another device with this link:</p>
+            <input className="input" readOnly value={riderUrl} onFocus={(e) => e.currentTarget.select()} aria-label="Rider screen link" />
+          </>
+        )}
         <p className="sub footer-link"><a href={routes.search()}>Place another order</a></p>
       </div>
     </main>

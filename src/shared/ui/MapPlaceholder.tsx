@@ -1,7 +1,7 @@
 /** Grayscale map illustration like the as-is screens. A real map is out of scope (brief §3). */
-export function MapPlaceholder({ route = false, caption }: { route?: boolean; caption?: string }) {
+export function MapPlaceholder({ route = false, caption, tall = false, noPin = false }: { route?: boolean; caption?: string; tall?: boolean; noPin?: boolean }) {
   return (
-    <div className="map" role="img" aria-label={route ? "Route preview (demo)" : "Pin preview (demo)"}>
+    <div className={`map${tall ? " map--tall" : ""}`} role="img" aria-label={route ? "Route preview (demo)" : "Pin preview (demo)"}>
       <svg viewBox="0 0 375 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <rect width="375" height="150" fill="var(--oo-neutral-200)" />
         <rect x="36" y="20" width="64" height="38" rx="4" fill="var(--oo-neutral-300)" />
@@ -16,7 +16,7 @@ export function MapPlaceholder({ route = false, caption }: { route?: boolean; ca
             <rect x="62" y="108" width="16" height="16" rx="3" fill="var(--oo-neutral-700)" />
             <Pin x={300} y={38} />
           </>
-        ) : (
+        ) : noPin ? null : (
           <Pin x={187} y={66} />
         )}
       </svg>

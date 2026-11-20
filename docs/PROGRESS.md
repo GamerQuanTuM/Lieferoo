@@ -30,6 +30,10 @@ Deadline: Saturday. Project final deadline is T0+49h; my task due is recommended
 
 - [x] 2026-11-19 Restructured into feature modules (address, checkout, orders, translation, rider) + app/shared/domain/data; central routes and storage helpers; removed duplicate root files (checksum-verified); resources moved to docs/resources; added docs/ (README index, ARCHITECTURE, PRODUCT_OVERVIEW, DATA_MODEL, DEVELOPMENT), per-feature READMEs and CLAUDE.md; architecture rules enforced by test. 56 tests pass; full flow re-verified in Chrome 390x844.
 
+- [x] 2026-11-20 Android app via Capacitor 8 (`capacitor.config.ts`, `android/`, appId `com.lieferoo.app`). Native bootstrap in `src/shared/native.ts` (status bar, hardware back button). UI polish for native: SVG icons (`shared/ui/Icons.tsx`) replace text glyphs, safe-area insets, tap highlight/touch rules, fixed-CTA safe-area. Scripts: `npm run android:sync`, `android:apk`, `android:open`. Needs JDK 21 (Android Studio's `jbr`) and `android/local.properties` (`sdk.dir=...`, git-ignored).
+
+- [x] 2026-11-20 New pages from `docs/resources/new_pages`: **Confirming Address** -> `address/PinScreen` (`#/pin`, linked from search "Pin on Maps"); **Delivery / Order Tracking** -> `checkout/TrackingScreen` (`#/track/:token`); **Order (Store View)** -> new feature `store` (`#/store/:idOrToken`). Selecting Address, Checkout and Rider's View already existed. The Placed screen links to all three.
+
 ## Next (updated)
 - [ ] Team fills Decision columns in docs/TEAM_DISCUSSION.md; get PM/designer/marketer answers (§1.6).
 - [ ] Open question: is the designer's Figma different from as-is? Adjust styling once received.

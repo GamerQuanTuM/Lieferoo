@@ -31,7 +31,7 @@
   --oo-color-divider: var(--oo-neutral-200);
   --oo-color-band: var(--oo-neutral-100);
 
-  --oo-font: 'Noto Sans KR', system-ui, sans-serif;
+  --oo-font: 'Noto Sans KR', 'Noto Sans CJK KR', 'Roboto', system-ui, sans-serif;
   --oo-type-display: 700 24px/32px var(--oo-font);
   --oo-type-title: 700 20px/28px var(--oo-font);
   --oo-type-headline: 700 17px/24px var(--oo-font);

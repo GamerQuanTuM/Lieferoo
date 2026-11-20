@@ -9,3 +9,4 @@ Mobile web app: foreign customer (English) → rider (Korean). React 18 + Vite +
 - **Never** hide the customer's original text behind a translation; door codes are copied verbatim.
 - Provided files in `docs/resources/` are read-only references. Sample data is `public/data/`.
 - Update `docs/PROGRESS.md` after each step.
+- **Android (Capacitor, optional):** `android/` is generated; native-only code lives in `src/shared/native.ts` (no-op in the browser). After editing `src/`, run `npm run android:sync` before `gradlew assembleDebug` (JDK 21). Never put `overflow-x:hidden` on `html`/`body`. See `docs/ARCHITECTURE.md` §7.
